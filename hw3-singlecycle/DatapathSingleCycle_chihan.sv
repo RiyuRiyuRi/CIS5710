@@ -211,21 +211,55 @@ module DatapathSingleCycle (
 
   always_comb begin
     illegal_insn = 1'b0;
+    pcNext = pcCurrent + 'd4;
+    we = 1'b0;
+    rd_data = 'd0;
+    cla_a = 'd0;
+    cla_b = 'd0;
+    cla_cin = 1'b0;
+    halt = 1'b0;
 
     case (insn_opcode)
       OpLui: begin
         // TODO: start here by implementing lui
         we = 1'b1;
-        rd_data = {imm_u, 12'h0};
-        pcNext = pcCurrent + 'd4;
+        rd_data = {imm_u, 12'h0};     //imm20 << 12
       end
 
-      OpAuipc:  begin
+      OpAuipc: begin
         we = 1'b1;
-        rd_data = pcCurrent + {imm_u, 12'h0};
-        pcNext = pcCurrent + 'd4;
+        rd_data = pcCurrent + {imm_u, 12'h0};     //pc + (imm20 << 12)
       end
 
+      OpRegImm: begin
+        if (insn_addi) begin
+          //rs1 + se(imm12)
+          cla_a = rs1_data;
+          cla_b = imm_i_sext;
+          cla_cin = 1'b0;
+
+          //wr sum to rd
+          rd_data = cla_sum;
+          we = 1'b1;
+        end
+      end
+
+      OpBranch: begin
+        if (insn_beq) begin
+          if (rs1_data == rs2_data)
+            pcNext = pcCurrent + imm_b_sext;
+        end else if (insn_bne) begin
+          if (rs1_data != rs2_data)
+            pcNext = pcCurrent + imm_b_sext;
+        end
+
+      end
+
+      OpEnviron: begin
+        if (insn_ecall) begin
+          halt = 1'b1;
+        end
+      end
 
       default: begin
         illegal_insn = 1'b1;
@@ -239,6 +273,10 @@ logic [`REG_SIZE] rs1_data;
 logic [`REG_SIZE] rs2_data;
 logic we;
 
+logic [`REG_SIZE] cla_a, cla_b;
+logic cla_cin;
+logic [`REG_SIZE] cla_sum;
+
 RegFile rf(
     .rd       (  insn_rd  ),
     .rd_data  (  rd_data  ),
@@ -251,6 +289,14 @@ RegFile rf(
     .we       (  we       ),
     .rst      (  rst      )
 );
+
+cla u_cla(
+    .a   ( cla_a   ),
+    .b   ( cla_b   ),
+    .cin ( cla_cin ),
+    .sum ( cla_sum )
+);
+
 
 
 endmodule
