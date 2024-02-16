@@ -25,6 +25,21 @@ module RegFile (
   logic [`REG_SIZE] regs[NumRegs];
 
   // TODO: your code here
+  assign regs[0] = 'h0;           //addr 0 set to 0
+  assign rs1_data = regs[rs1];    //rd data1
+  assign rs2_data = regs[rs2];    //rd data2
+
+  integer i;
+
+  //wr data
+  always_ff @(posedge clk)
+  if (rst) begin
+    for (i = 1; i < NumRegs; i = i + 1) begin
+      regs[i] <= 'h0;
+    end
+  end else if (we && (|rd)) begin   //we high and not write to 0 address
+    regs[rd] <= rd_data;
+  end
 
 endmodule
 
@@ -69,6 +84,10 @@ module DatapathSingleCycle (
   // J - unconditional jumps
   wire [20:0] imm_j;
   assign {imm_j[20], imm_j[10:1], imm_j[11], imm_j[19:12], imm_j[0]} = {insn_from_imem[31:12], 1'b0};
+
+  // U - Upper immediate
+  wire [19:0] imm_u;
+  assign imm_u = insn_from_imem[31:12];
 
   wire [`REG_SIZE] imm_i_sext = {{20{imm_i[11]}}, imm_i[11:0]};
   wire [`REG_SIZE] imm_s_sext = {{20{imm_s[11]}}, imm_s[11:0]};
@@ -163,6 +182,7 @@ module DatapathSingleCycle (
 
   // program counter
   logic [`REG_SIZE] pcNext, pcCurrent;
+
   always @(posedge clk) begin
     if (rst) begin
       pcCurrent <= 32'd0;
@@ -170,6 +190,7 @@ module DatapathSingleCycle (
       pcCurrent <= pcNext;
     end
   end
+
   assign pc_to_imem = pcCurrent;
 
   // cycle/insn_from_imem counters
@@ -190,16 +211,112 @@ module DatapathSingleCycle (
 
   always_comb begin
     illegal_insn = 1'b0;
+    pcNext = pcCurrent + 'd4;
+    we = 1'b0;
+    rd_data = 'd0;
+    cla_a = 'd0;
+    cla_b = 'd0;
+    cla_cin = 1'b0;
+    halt = 1'b0;
 
     case (insn_opcode)
       OpLui: begin
         // TODO: start here by implementing lui
+        we = 1'b1;
+        rd_data = {imm_u, 12'h0};     //imm20 << 12
       end
+
+      OpAuipc: begin
+        we = 1'b1;
+        rd_data = pcCurrent + {imm_u, 12'h0};     //pc + (imm20 << 12)
+      end
+
+      OpRegImm: begin
+        if (insn_addi) begin
+          //rs1 + se(imm12)
+          cla_a = rs1_data;
+          cla_b = imm_i_sext;
+          cla_cin = 1'b0;
+
+          //wr sum to rd
+          rd_data = cla_sum;
+          we = 1'b1;
+        end else if (insn_slti) begin  // test fail
+          rd_data = rs1_data < imm_i_sext ? {31'b0, 1'b1} : {31'b0, 1'b0};
+          we = 1'b1;
+        end
+      end
+
+      OpRegReg: begin
+        if (insn_or) begin
+          rd_data = rs1_data | rs2_data;
+          we = 1'b1;
+        end else if(insn_and) begin
+          rd_data = rs1_data & rs2_data;
+          we = 1'b1;
+        end else if(insn_sra) begin  // test fail
+          rd_data = rs1_data >>> rs2_data[4:0];
+          we = 1'b1;
+        end else if(insn_srl) begin
+          rd_data = rs1_data >> rs2_data[4:0];
+          we = 1'b1;
+        end
+      end
+
+      OpBranch: begin
+        if (insn_beq) begin
+          if (rs1_data == rs2_data)
+            pcNext = pcCurrent + imm_b_sext;
+        end else if (insn_bne) begin
+          if (rs1_data != rs2_data)
+            pcNext = pcCurrent + imm_b_sext;
+        end
+
+      end
+
+      OpEnviron: begin
+        if (insn_ecall) begin
+          halt = 1'b1;
+        end
+      end
+
       default: begin
         illegal_insn = 1'b1;
       end
     endcase
   end
+
+//instantiate register file
+logic [`REG_SIZE] rd_data;
+logic [`REG_SIZE] rs1_data;
+logic [`REG_SIZE] rs2_data;
+logic we;
+
+logic [`REG_SIZE] cla_a, cla_b;
+logic cla_cin;
+logic [`REG_SIZE] cla_sum;
+
+RegFile rf(
+    .rd       (  insn_rd  ),
+    .rd_data  (  rd_data  ),
+    .rs1      (  insn_rs1 ),
+    .rs1_data (  rs1_data ),
+    .rs2      (  insn_rs2 ),
+    .rs2_data (  rs2_data ),
+
+    .clk      (  clk      ),
+    .we       (  we       ),
+    .rst      (  rst      )
+);
+
+cla u_cla(
+    .a   ( cla_a   ),
+    .b   ( cla_b   ),
+    .cin ( cla_cin ),
+    .sum ( cla_sum )
+);
+
+
 
 endmodule
 
