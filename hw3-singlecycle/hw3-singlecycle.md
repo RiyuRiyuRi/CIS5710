@@ -16,7 +16,7 @@ Once your register file is working, you can start implementing your processor.
 
 > **The instance of the RegFile module inside your processor must be named `rf` for the tests to work**.
 
-For this milestone, your processor must support ALU instructions (`lui` through `and` on our [ISA sheet](../riscv isa reference sheet.pdf)), branches (`beq` through `bgeu`) and the `ecall` instruction.
+For this milestone, your processor must support ALU instructions (`lui` through `and` (but not `auipc`) on our [ISA sheet](../riscv isa reference sheet.pdf)), branches (`beq` through `bgeu`) and the `ecall` instruction.
 
 > For our purposes, `ecall` just needs to set the `halt` output of the processor to 1
 
@@ -100,4 +100,4 @@ TBD
 
 ## Submitting
 
-For both HW3A and HW3B, run `make zip` and submit the `single.zip` file on Gradescope.
+For both HW3A and HW3B, run `make impl` and `make zip` (both on biglab.seas, not inside the docker container) and submit the `single.zip` file on Gradescope.
