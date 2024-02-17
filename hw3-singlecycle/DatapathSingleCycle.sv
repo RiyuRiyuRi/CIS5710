@@ -242,7 +242,7 @@ module DatapathSingleCycle (
           rd_data = cla_sum;
           we = 1'b1;
         end else if (insn_slti) begin  // test fail
-          // rd_data = rs1_data - imm_i_sext ? {31'b0, 1'b1} : {31'b0, 1'b0};
+          // rd_data = rs1_data < imm_i_sext ? {31'b0, 1'b1} : {31'b0, 1'b0};
           rd_data = (rs1_data - imm_i_sext)[31]? {31'b0, 1'b1} : {31'b0, 1'b0};
           we = 1'b1;
         end
