@@ -214,7 +214,7 @@ module DatapathSingleCycle (
   logic [`REG_SIZE] rs1_data;
   logic [`REG_SIZE] rs2_data;
   logic we;
-  
+
   //cla inf
   logic [`REG_SIZE] cla_a, cla_b;
   logic cla_cin;
@@ -257,6 +257,27 @@ module DatapathSingleCycle (
         end else if (insn_slti) begin  // test fail
           // rd_data = rs1_data < imm_i_sext ? {31'b0, 1'b1} : {31'b0, 1'b0};
           rd_data = (slti_diff[31])? {31'b0, 1'b1} : {31'b0, 1'b0};
+          we = 1'b1;
+        end else if (insn_sltiu) begin  //sltiu
+          rd_data = (rs1_data < imm_i_sext)? {31'b0, 1'b1} : {31'b0, 1'b0};
+          we = 1'b1;
+        end else if (insn_xori) begin   //xori
+          rd_data = rs1_data ^ imm_i_sext;
+          we = 1'b1;
+        end else if (insn_ori) begin    //ori
+          rd_data = rs1_data | imm_i_sext;
+          we = 1'b1;
+        end else if (insn_andi) begin   //andi
+          rd_data = rs1_data & imm_i_sext;
+          we = 1'b1;
+        end else if (insn_slli) begin   //slli
+          rd_data = rs1_data << imm_i;
+          we = 1'b1;
+        end else if (insn_srli) begin   //srli
+          rd_data = rs1_data >> imm_i;
+          we = 1'b1;
+        end else if (insn_srai) begin   //srai
+          rd_data = rs1_data >>> imm_i;
           we = 1'b1;
         end
       end
