@@ -221,6 +221,7 @@ module DatapathSingleCycle (
   logic [`REG_SIZE] cla_sum;
 
   wire [`REG_SIZE] slti_diff = rs1_data - imm_i_sext;
+  wire [`REG_SIZE] slt_diff = rs1_data - rs2_data;
 
   always_comb begin
     illegal_insn = 1'b0;
@@ -277,23 +278,49 @@ module DatapathSingleCycle (
           rd_data = rs1_data >> imm_i;
           we = 1'b1;
         end else if (insn_srai) begin   //srai
-          rd_data = rs1_data >>> imm_i;
+          rd_data = $signed(rs1_data) >>> imm_i;
           we = 1'b1;
         end
       end
 
       OpRegReg: begin
-        if (insn_or) begin
+        if (insn_add) begin               //add
+          cla_a = rs1_data;
+          cla_b = rs2_data;
+          cla_cin = 1'b0;
+
+          rd_data = cla_sum;
+          we = 1'b1;
+        end else if (insn_sub) begin     //sub
+          cla_a = rs1_data;
+          cla_b = ~rs2_data + 'd1;
+          cla_cin = 1'b0;
+
+          rd_data = cla_sum;
+          we = 1'b1;
+        end else if (insn_sll) begin    //sll
+          rd_data = rs1_data << rs2_data[4:0];
+          we = 1'b1;
+        end else if (insn_slt) begin    //slt
+          rd_data = (slt_diff[31])? {31'b0, 1'b1} : {31'b0, 1'b0};
+          we = 1'b1;
+        end else if (insn_sltu) begin   //sltu
+          rd_data = (rs1_data < rs2_data)? {31'b0, 1'b1} : {31'b0, 1'b0};
+          we = 1'b1;
+        end else if (insn_xor) begin    //xor
+          rd_data = rs1_data ^ rs2_data;
+          we = 1'b1;
+        end else if (insn_srl) begin    //srl
+          rd_data = rs1_data >> rs2_data[4:0];
+          we = 1'b1;
+        end else if (insn_sra) begin    //sra
+          rd_data = $signed(rs1_data) >>> rs2_data[4:0];
+          we = 1'b1;
+        end else if (insn_or) begin     //or
           rd_data = rs1_data | rs2_data;
           we = 1'b1;
-        end else if(insn_and) begin
+        end else if (insn_and) begin    //and
           rd_data = rs1_data & rs2_data;
-          we = 1'b1;
-        end else if(insn_sra) begin  // test fail
-          rd_data = rs1_data >>> rs2_data[4:0];
-          we = 1'b1;
-        end else if(insn_srl) begin
-          rd_data = rs1_data >> rs2_data[4:0];
           we = 1'b1;
         end
       end
