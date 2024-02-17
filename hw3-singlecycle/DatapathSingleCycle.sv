@@ -220,8 +220,8 @@ module DatapathSingleCycle (
   logic cla_cin;
   logic [`REG_SIZE] cla_sum;
 
-  wire [`REG_SIZE] slti_diff = rs1_data - imm_i_sext;
-  wire [`REG_SIZE] slt_diff = rs1_data - rs2_data;
+  wire [32:0] slti_diff = {rs1_data[31], rs1_data} - {imm_i_sext[31], imm_i_sext};
+  wire [32:0] slt_diff =  {rs1_data[31], rs1_data} -  {rs2_data[31], rs2_data};
 
   always_comb begin
     illegal_insn = 1'b0;
@@ -257,7 +257,7 @@ module DatapathSingleCycle (
           we = 1'b1;
         end else if (insn_slti) begin  // test fail
           // rd_data = rs1_data < imm_i_sext ? {31'b0, 1'b1} : {31'b0, 1'b0};
-          rd_data = (slti_diff[31])? {31'b0, 1'b1} : {31'b0, 1'b0};
+          rd_data = (slti_diff[32])? {31'b0, 1'b1} : {31'b0, 1'b0};
           we = 1'b1;
         end else if (insn_sltiu) begin  //sltiu
           rd_data = (rs1_data < imm_i_sext)? {31'b0, 1'b1} : {31'b0, 1'b0};
@@ -278,7 +278,7 @@ module DatapathSingleCycle (
           rd_data = rs1_data >> imm_i;
           we = 1'b1;
         end else if (insn_srai) begin   //srai
-          rd_data = $signed(rs1_data) >>> imm_i;
+          rd_data = $signed(rs1_data) >>> imm_i[4:0];
           we = 1'b1;
         end
       end
@@ -302,7 +302,7 @@ module DatapathSingleCycle (
           rd_data = rs1_data << rs2_data[4:0];
           we = 1'b1;
         end else if (insn_slt) begin    //slt
-          rd_data = (slt_diff[31])? {31'b0, 1'b1} : {31'b0, 1'b0};
+          rd_data = (slt_diff[32])? {31'b0, 1'b1} : {31'b0, 1'b0};
           we = 1'b1;
         end else if (insn_sltu) begin   //sltu
           rd_data = (rs1_data < rs2_data)? {31'b0, 1'b1} : {31'b0, 1'b0};
