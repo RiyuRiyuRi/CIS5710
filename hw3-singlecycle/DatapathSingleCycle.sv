@@ -209,6 +209,19 @@ module DatapathSingleCycle (
 
   logic illegal_insn;
 
+  //reg file inf
+  logic [`REG_SIZE] rd_data;
+  logic [`REG_SIZE] rs1_data;
+  logic [`REG_SIZE] rs2_data;
+  logic we;
+  
+  //cla inf
+  logic [`REG_SIZE] cla_a, cla_b;
+  logic cla_cin;
+  logic [`REG_SIZE] cla_sum;
+
+  wire [`REG_SIZE] slti_diff = rs1_data - imm_i_sext;
+
   always_comb begin
     illegal_insn = 1'b0;
     pcNext = pcCurrent + 'd4;
@@ -242,8 +255,8 @@ module DatapathSingleCycle (
           rd_data = cla_sum;
           we = 1'b1;
         end else if (insn_slti) begin  // test fail
-          rd_data = rs1_data < imm_i_sext ? {31'b0, 1'b1} : {31'b0, 1'b0};
-          // rd_data = ((rs1_data - imm_i_sext)[31])? {31'b0, 1'b1} : {31'b0, 1'b0};
+          // rd_data = rs1_data < imm_i_sext ? {31'b0, 1'b1} : {31'b0, 1'b0};
+          rd_data = (slti_diff[31])? {31'b0, 1'b1} : {31'b0, 1'b0};
           we = 1'b1;
         end
       end
@@ -288,15 +301,6 @@ module DatapathSingleCycle (
   end
 
 //instantiate register file
-logic [`REG_SIZE] rd_data;
-logic [`REG_SIZE] rs1_data;
-logic [`REG_SIZE] rs2_data;
-logic we;
-
-logic [`REG_SIZE] cla_a, cla_b;
-logic cla_cin;
-logic [`REG_SIZE] cla_sum;
-
 RegFile rf(
     .rd       (  insn_rd  ),
     .rd_data  (  rd_data  ),
