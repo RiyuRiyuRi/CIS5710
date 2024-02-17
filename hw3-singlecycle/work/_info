@@ -1,0 +1,219 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dD:/cis5710/CIS5710/hw3-singlecycle
+vcla
+Z1 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+Z2 !s110 1708140358
+!i10b 1
+!s100 C4G;M1L5?SCSeeeF>N^hO1
+IQc3dYS3]nY03[zF7]eNCR0
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+Z4 !s105 DatapathSingleCycle_sv_unit
+S1
+R0
+Z5 w1708095870
+Z6 8../hw2b/cla.sv
+Z7 F../hw2b/cla.sv
+L0 58
+Z8 OL;L;10.4c;61
+r1
+!s85 0
+31
+Z9 !s108 1708140358.000000
+Z10 !s107 RvDisassembler.sv|../hw2b/cla.sv|../hw2a/divider_unsigned.sv|D:/cis5710/CIS5710/hw3-singlecycle/DatapathSingleCycle.sv|
+Z11 !s90 -reportprogress|300|-work|work|D:/cis5710/CIS5710/hw3-singlecycle/DatapathSingleCycle.sv|
+!i113 0
+Z12 o-work work -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+vdivider_unsigned
+R1
+R2
+!i10b 1
+!s100 8D^M6=HIM3fi<C@j`KNWG2
+IF<[9LhcgRkGPW4anU4YR03
+R3
+R4
+S1
+R0
+Z13 w1708095858
+Z14 8../hw2a/divider_unsigned.sv
+Z15 F../hw2a/divider_unsigned.sv
+L0 13
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 0
+R12
+vdivu_1iter
+R1
+R2
+!i10b 1
+!s100 ab99Y]AX:i4Wd:=kNB6jJ2
+ITPe^=P1g3f4bO@RND?=1c3
+R3
+R4
+S1
+R0
+R13
+R14
+R15
+L0 40
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 0
+R12
+vgp1
+R1
+R2
+!i10b 1
+!s100 z^n3BEbJ2A2ZE55Z1]DJ92
+IRH1eeoz[iAjJ5m=]hLO:00
+R3
+R4
+S1
+R0
+R5
+R6
+R7
+L0 9
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 0
+R12
+vgp2
+R1
+R2
+!i10b 1
+!s100 Xm_k32FB4JPMB8b9H^Z483
+IU19M0kb[T<0E?RH?O]AS@0
+R3
+R4
+S1
+R0
+R5
+R6
+R7
+L0 24
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 0
+R12
+vgp4
+R1
+R2
+!i10b 1
+!s100 >IGPo1l]><h:<Xb0njc0=0
+I0E6Z@nl9M]8fiko`NU1g40
+R3
+R4
+S1
+R0
+R5
+R6
+R7
+L0 32
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 0
+R12
+vgp8
+R1
+R2
+!i10b 1
+!s100 iR3^YkHYc@eC5mI=L46gJ1
+IR<ToAgkcZO8LkIS2[Sf^S0
+R3
+R4
+S1
+R0
+R5
+R6
+R7
+L0 46
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 0
+R12
+vMemorySingleCycle
+R1
+R2
+!i10b 1
+!s100 ahaX9LM=JjC9<::RD[Sl91
+I_Ieg7ONLhm[YEAK:<WYSW0
+R3
+R4
+S1
+R0
+Z16 w1708140247
+Z17 8D:/cis5710/CIS5710/hw3-singlecycle/DatapathSingleCycle.sv
+Z18 FD:/cis5710/CIS5710/hw3-singlecycle/DatapathSingleCycle.sv
+L0 328
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 0
+R12
+n@memory@single@cycle
+vRiscvProcessor
+R1
+R2
+!i10b 1
+!s100 OaAz`UkF^Q5??RboJ;>mG2
+I;dOYR2M7lSPSz`mg8lCnZ0
+R3
+R4
+S1
+R0
+R16
+R17
+R18
+L0 414
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 0
+R12
+n@riscv@processor
