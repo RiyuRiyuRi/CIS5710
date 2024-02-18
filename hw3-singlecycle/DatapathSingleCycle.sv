@@ -222,9 +222,9 @@ module DatapathSingleCycle (
 
   // wire [32:0] slti_diff = {rs1_data[31], rs1_data} - {imm_i_sext[31], imm_i_sext};
   // wire [32:0] slt_diff =  {rs1_data[31], rs1_data} -  {rs2_data[31], rs2_data};
-  logic [`REG_SIZE] addr_ld;
+  logic [`REG_SIZE] addr_ld;  //addr for loading, byte aligned
 
-  assign addr_to_dmem = {addr_ld[31:2], 2'b00};
+  assign addr_to_dmem = {addr_ld[31:2], 2'b00};   //addr to mem should be 32bits aligned
 
   always_comb begin
     illegal_insn = 1'b0;
@@ -334,60 +334,63 @@ module DatapathSingleCycle (
       end
 
       OpBranch: begin
-        if (insn_beq) begin
+        if (insn_beq) begin             //beq
           if (rs1_data == rs2_data)
             pcNext = pcCurrent + imm_b_sext;
-        end else if (insn_bne) begin
+        end else if (insn_bne) begin    //bne   
           if (rs1_data != rs2_data)
             pcNext = pcCurrent + imm_b_sext;
-        end else if (insn_blt) begin
+        end else if (insn_blt) begin    //blt
             if ($signed(rs1_data) < $signed(rs2_data))
               pcNext = pcCurrent + imm_b_sext;
-        end else if (insn_bge) begin
+        end else if (insn_bge) begin    //bge
             if ($signed(rs1_data) >= $signed(rs2_data))
               pcNext = pcCurrent + imm_b_sext;
-        end else if (insn_bltu) begin
+        end else if (insn_bltu) begin   //bltu
             if (rs1_data < rs2_data)
               pcNext = pcCurrent + imm_b_sext;
-        end else if (insn_bgeu) begin
+        end else if (insn_bgeu) begin   //bgeu
             if (rs1_data >= rs2_data)
              pcNext = pcCurrent + imm_b_sext;
         end
       end
 
       OpLoad: begin
-        if (insn_lb) begin
+        if (insn_lb) begin              //lb
           addr_ld = rs1_data + imm_i_sext;
-          case (addr_ld[1:0])
+
+          case (addr_ld[1:0])     //bytes aligned
           2'b00:  rd_data = {{24{load_data_from_dmem[0*8 + 7]}}, load_data_from_dmem[0*8 +: 8]};
           2'b01:  rd_data = {{24{load_data_from_dmem[1*8 + 7]}}, load_data_from_dmem[1*8 +: 8]};
           2'b10:  rd_data = {{24{load_data_from_dmem[2*8 + 7]}}, load_data_from_dmem[2*8 +: 8]};
           2'b11:  rd_data = {{24{load_data_from_dmem[3*8 + 7]}}, load_data_from_dmem[3*8 +: 8]};
           endcase
           we = 1'b1;
-        end else if (insn_lh) begin
+        end else if (insn_lh) begin     //lh
           addr_ld = rs1_data + imm_i_sext;
-          case (addr_ld[1])
+
+          case (addr_ld[1])       //16bits aligned
           1'b0:  rd_data = {{16{load_data_from_dmem[0*16 + 15]}}, load_data_from_dmem[0*16 +: 16]};
           1'b1:  rd_data = {{16{load_data_from_dmem[1*16 + 15]}}, load_data_from_dmem[1*16 +: 16]};
           endcase
           we = 1'b1;
-        end else if (insn_lw) begin
-          addr_ld = rs1_data + imm_i_sext;
-          rd_data = load_data_from_dmem;
+        end else if (insn_lw) begin     //lw
+          addr_ld = rs1_data + imm_i_sext;    
+
+          rd_data = load_data_from_dmem;   //addr is 32bits aligned
           we = 1'b1;
-        end else if (insn_lbu) begin
+        end else if (insn_lbu) begin    //lbu
           addr_ld = rs1_data + imm_i_sext;
-          case (addr_ld[1:0])
+          case (addr_ld[1:0])     //byte aligned
           2'b00:  rd_data = {24'b0, load_data_from_dmem[0*8 +: 8]};
           2'b01:  rd_data = {24'b0, load_data_from_dmem[1*8 +: 8]};
           2'b10:  rd_data = {24'b0, load_data_from_dmem[2*8 +: 8]};
           2'b11:  rd_data = {24'b0, load_data_from_dmem[3*8 +: 8]};
           endcase
           we = 1'b1;
-        end else if (insn_lhu) begin
+        end else if (insn_lhu) begin    //lhu
           addr_ld = rs1_data + imm_i_sext;
-          case (addr_ld[1])
+          case (addr_ld[1])      //16bits aligned
           1'b0:  rd_data = {16'b0, load_data_from_dmem[0*16 +: 16]};
           1'b1:  rd_data = {16'b0, load_data_from_dmem[1*16 +: 16]};
           endcase
