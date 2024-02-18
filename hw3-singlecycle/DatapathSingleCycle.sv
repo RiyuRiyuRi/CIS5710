@@ -52,8 +52,8 @@ module DatapathSingleCycle (
     // addr_to_dmem is a read-write port
     output wire [`REG_SIZE] addr_to_dmem,
     input logic [`REG_SIZE] load_data_from_dmem,
-    output wire [`REG_SIZE] store_data_to_dmem,
-    output wire [3:0] store_we_to_dmem
+    output logic [`REG_SIZE] store_data_to_dmem,
+    output logic [3:0] store_we_to_dmem
 );
 
   // components of the instruction
@@ -222,6 +222,9 @@ module DatapathSingleCycle (
 
   // wire [32:0] slti_diff = {rs1_data[31], rs1_data} - {imm_i_sext[31], imm_i_sext};
   // wire [32:0] slt_diff =  {rs1_data[31], rs1_data} -  {rs2_data[31], rs2_data};
+  logic [`REG_SIZE] addr_ld;
+
+  assign addr_to_dmem = {addr_ld[31:2], 2'b00};
 
   always_comb begin
     illegal_insn = 1'b0;
@@ -232,6 +235,9 @@ module DatapathSingleCycle (
     cla_b = 'd0;
     cla_cin = 1'b0;
     halt = 1'b0;
+
+    store_data_to_dmem = 'd0;
+    store_we_to_dmem = 4'b0000;
 
     case (insn_opcode)
       OpLui: begin
@@ -346,6 +352,46 @@ module DatapathSingleCycle (
         end else if (insn_bgeu) begin
             if (rs1_data >= rs2_data)
              pcNext = pcCurrent + imm_b_sext;
+        end
+      end
+
+      OpLoad: begin
+        if (insn_lb) begin
+          addr_ld = rs1_data + imm_i_sext;
+          case (addr_ld[1:0])
+          2'b00:  rd_data = {{24{load_data_from_dmem[0*8 + 7]}}, load_data_from_dmem[0*8 +: 8]};
+          2'b01:  rd_data = {{24{load_data_from_dmem[1*8 + 7]}}, load_data_from_dmem[1*8 +: 8]};
+          2'b10:  rd_data = {{24{load_data_from_dmem[2*8 + 7]}}, load_data_from_dmem[2*8 +: 8]};
+          2'b11:  rd_data = {{24{load_data_from_dmem[3*8 + 7]}}, load_data_from_dmem[3*8 +: 8]};
+          endcase
+          we = 1'b1;
+        end else if (insn_lh) begin
+          addr_ld = rs1_data + imm_i_sext;
+          case (addr_ld[1])
+          1'b0:  rd_data = {{16{load_data_from_dmem[0*16 + 15]}}, load_data_from_dmem[0*16 +: 16]};
+          1'b1:  rd_data = {{16{load_data_from_dmem[1*16 + 15]}}, load_data_from_dmem[1*16 +: 16]};
+          endcase
+          we = 1'b1;
+        end else if (insn_lw) begin
+          addr_ld = rs1_data + imm_i_sext;
+          rd_data = load_data_from_dmem;
+          we = 1'b1;
+        end else if (insn_lbu) begin
+          addr_ld = rs1_data + imm_i_sext;
+          case (addr_ld[1:0])
+          2'b00:  rd_data = {24'b0, load_data_from_dmem[0*8 +: 8]};
+          2'b01:  rd_data = {24'b0, load_data_from_dmem[1*8 +: 8]};
+          2'b10:  rd_data = {24'b0, load_data_from_dmem[2*8 +: 8]};
+          2'b11:  rd_data = {24'b0, load_data_from_dmem[3*8 +: 8]};
+          endcase
+          we = 1'b1;
+        end else if (insn_lhu) begin
+          addr_ld = rs1_data + imm_i_sext;
+          case (addr_ld[1])
+          1'b0:  rd_data = {16'b0, load_data_from_dmem[0*16 +: 16]};
+          1'b1:  rd_data = {16'b0, load_data_from_dmem[1*16 +: 16]};
+          endcase
+          we = 1'b1;
         end
       end
 
