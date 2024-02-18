@@ -332,8 +332,19 @@ module DatapathSingleCycle (
         end else if (insn_bne) begin
           if (rs1_data != rs2_data)
             pcNext = pcCurrent + imm_b_sext;
+        end else if (insn_blt) begin
+            if ($signed(rs1_data) < $signed(rs2_data))
+              pcNext = pcCurrent + imm_b_sext;
+        end else if (insn_bge) begin
+            if ($signed(rs1_data) >= $signed(rs2_data))
+              pcNext = pcCurrent + imm_b_sext;
+        end else if (insn_bltu) begin
+            if (rs1_data < rs2_data)
+              pcNext = pcCurrent + imm_b_sext;
+        end else if (insn_bgeu) begin
+            if (rs1_data >= rs2_data)
+             pcNext = pcCurrent + imm_b_sext;
         end
-
       end
 
       OpEnviron: begin
