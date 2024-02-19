@@ -220,6 +220,10 @@ module DatapathSingleCycle (
   logic cla_cin;
   logic [`REG_SIZE] cla_sum;
 
+  //divider inf
+  logic [31:0] dividend, divisor;
+  logic [31:0] remainder, quotient;
+
   // wire [32:0] slti_diff = {rs1_data[31], rs1_data} - {imm_i_sext[31], imm_i_sext};
   // wire [32:0] slt_diff =  {rs1_data[31], rs1_data} -  {rs2_data[31], rs2_data};
   logic [`REG_SIZE] addr_ld;  //addr for loading, byte aligned
@@ -235,6 +239,8 @@ module DatapathSingleCycle (
     cla_a = 'd0;
     cla_b = 'd0;
     cla_cin = 1'b0;
+    dividend = 'd0;
+    divisor = 'd0;
     halt = 1'b0;
 
     store_data_to_dmem = 'd0;
@@ -340,20 +346,32 @@ module DatapathSingleCycle (
           we = 1'b1;
         end else if (insn_mulhsu) begin   
           mul_hsu = $signed(rs1_data) * rs2_data;
-          rd_data = mul_hsh[63:32];
+          rd_data = mul_hsu[63:32];
           we = 1'b1;
         end else if (insn_mulhu) begin   
           mul_hu = rs1_data * rs2_data;
           rd_data = mul_hu[63:32];
           we = 1'b1;
-        end else if (insn_div) begin   
-
+        end else if (insn_div) begin  
+          dividend = $signed(rs1_data);
+          divisor = $signed(rs2_data);
+          rd_data = quotient;
+          we = 1'b1;
         end else if (insn_divu) begin   
-
+          dividend = rs1_data;
+          divisor = rs2_data;
+          rd_data = quotient;
+          we = 1'b1;
         end else if (insn_rem) begin   
-
+          dividend = $signed(rs1_data);
+          divisor = $signed(rs2_data);
+          rd_data = remainder;
+          we = 1'b1;
         end else if (insn_remu) begin   
-
+          dividend = rs1_data;
+          divisor = rs2_data;
+          rd_data = remainder;
+          we = 1'b1;
         end 
       end
 
@@ -477,6 +495,14 @@ cla u_cla(
     .cin ( cla_cin ),
     .sum ( cla_sum )
 );
+
+divider_unsigned u_divider(
+    .i_dividend  ( dividend  ),
+    .i_divisor   ( divisor   ),
+    .o_remainder ( remainder ),
+    .o_quotient  ( quotient  )
+);
+
 
 
 
