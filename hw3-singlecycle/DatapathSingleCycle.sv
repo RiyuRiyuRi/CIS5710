@@ -223,6 +223,7 @@ module DatapathSingleCycle (
   // wire [32:0] slti_diff = {rs1_data[31], rs1_data} - {imm_i_sext[31], imm_i_sext};
   // wire [32:0] slt_diff =  {rs1_data[31], rs1_data} -  {rs2_data[31], rs2_data};
   logic [`REG_SIZE] addr_ld;  //addr for loading, byte aligned
+  logic [63:0] mul_h, mul_hsu, mul_hu;
 
   assign addr_to_dmem = {addr_ld[31:2], 2'b00};   //addr to mem should be 32bits aligned
 
@@ -330,29 +331,30 @@ module DatapathSingleCycle (
         end else if (insn_and) begin    //and
           rd_data = rs1_data & rs2_data;
           we = 1'b1;
-        end
-      end
+        end else if (insn_mul) begin   
+          rd_data = rs1_data * rs2_data;
+          we = 1'b1;
+        end else if (insn_mulh) begin   
+          mul_h= $signed(rs1_data) * $signed(rs2_data);
+          rd_data = mul_h[63:32];
+          we = 1'b1;
+        end else if (insn_mulhsu) begin   
+          mul_hsu = $signed(rs1_data) * rs2_data;
+          rd_data = mul_hsh[63:32];
+          we = 1'b1;
+        end else if (insn_mulhu) begin   
+          mul_hu = rs1_data * rs2_data;
+          rd_data = mul_hu[63:32];
+          we = 1'b1;
+        end else if (insn_div) begin   
 
-      OpBranch: begin
-        if (insn_beq) begin             //beq
-          if (rs1_data == rs2_data)
-            pcNext = pcCurrent + imm_b_sext;
-        end else if (insn_bne) begin    //bne   
-          if (rs1_data != rs2_data)
-            pcNext = pcCurrent + imm_b_sext;
-        end else if (insn_blt) begin    //blt
-            if ($signed(rs1_data) < $signed(rs2_data))
-              pcNext = pcCurrent + imm_b_sext;
-        end else if (insn_bge) begin    //bge
-            if ($signed(rs1_data) >= $signed(rs2_data))
-              pcNext = pcCurrent + imm_b_sext;
-        end else if (insn_bltu) begin   //bltu
-            if (rs1_data < rs2_data)
-              pcNext = pcCurrent + imm_b_sext;
-        end else if (insn_bgeu) begin   //bgeu
-            if (rs1_data >= rs2_data)
-             pcNext = pcCurrent + imm_b_sext;
-        end
+        end else if (insn_divu) begin   
+
+        end else if (insn_rem) begin   
+
+        end else if (insn_remu) begin   
+
+        end 
       end
 
       OpLoad: begin
@@ -398,10 +400,55 @@ module DatapathSingleCycle (
         end
       end
 
+      OpStore: begin
+        if (insn_sb) begin
+
+        end else if (insn_sh) begin
+
+        end else if (insn_sw) begin
+
+        end
+      end
+
+      OpJal : begin
+
+      end
+
+      OpJalr : begin
+
+      end
+
+      OpBranch: begin
+        if (insn_beq) begin             //beq
+          if (rs1_data == rs2_data)
+            pcNext = pcCurrent + imm_b_sext;
+        end else if (insn_bne) begin    //bne   
+          if (rs1_data != rs2_data)
+            pcNext = pcCurrent + imm_b_sext;
+        end else if (insn_blt) begin    //blt
+            if ($signed(rs1_data) < $signed(rs2_data))
+              pcNext = pcCurrent + imm_b_sext;
+        end else if (insn_bge) begin    //bge
+            if ($signed(rs1_data) >= $signed(rs2_data))
+              pcNext = pcCurrent + imm_b_sext;
+        end else if (insn_bltu) begin   //bltu
+            if (rs1_data < rs2_data)
+              pcNext = pcCurrent + imm_b_sext;
+        end else if (insn_bgeu) begin   //bgeu
+            if (rs1_data >= rs2_data)
+             pcNext = pcCurrent + imm_b_sext;
+        end
+      end
+
+
       OpEnviron: begin
         if (insn_ecall) begin
           halt = 1'b1;
         end
+      end
+
+      OpMiscMem: begin
+
       end
 
       default: begin
