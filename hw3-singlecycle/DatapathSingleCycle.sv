@@ -337,8 +337,7 @@ module DatapathSingleCycle (
         end else if (insn_and) begin    //and
           rd_data = rs1_data & rs2_data;
           we = 1'b1;
-        end
-       /*  end else if (insn_mul) begin   
+        end else if (insn_mul) begin   
           rd_data = rs1_data * rs2_data;
           we = 1'b1;
         end else if (insn_mulh) begin   
@@ -373,10 +372,10 @@ module DatapathSingleCycle (
           divisor = rs2_data;
           rd_data = remainder;
           we = 1'b1;
-        end  */
+        end  
       end
 
-      /* OpLoad: begin
+      OpLoad: begin
         if (insn_lb) begin              //lb
           addr_ld = rs1_data + imm_i_sext;
 
@@ -435,7 +434,7 @@ module DatapathSingleCycle (
 
       OpJalr : begin
 
-      end */
+      end
 
       OpBranch: begin
         if (insn_beq) begin             //beq
@@ -466,9 +465,9 @@ module DatapathSingleCycle (
         end
       end
 
-      /* OpMiscMem: begin
+      OpMiscMem: begin
 
-      end */
+      end
 
       default: begin
         illegal_insn = 1'b1;
