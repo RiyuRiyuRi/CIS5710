@@ -239,27 +239,28 @@ module DatapathSingleCycle (
     cla_a = 'd0;
     cla_b = 'd0;
     cla_cin = 1'b0;
-    dividend = 'd0;
-    divisor = 'd0;
+    dividend = rs1_data;
+    divisor = rs2_data;
     halt = 1'b0;
 
+    addr_ld = 'd0;
     store_data_to_dmem = 'd0;
     store_we_to_dmem = 4'b0000;
 
     case (insn_opcode)
-      OpLui: begin
+      OpLui: begin            //Lui
         // TODO: start here by implementing lui
         we = 1'b1;
         rd_data = {imm_u, 12'h0};     //imm20 << 12
       end
 
-      OpAuipc: begin
+      OpAuipc: begin          //Auipc
         we = 1'b1;
         rd_data = pcCurrent + {imm_u, 12'h0};     //pc + (imm20 << 12)
       end
 
       OpRegImm: begin
-        if (insn_addi) begin
+        if (insn_addi) begin  //addi
           //rs1 + se(imm12)
           cla_a = rs1_data;
           cla_b = imm_i_sext;
@@ -268,7 +269,7 @@ module DatapathSingleCycle (
           //wr sum to rd
           rd_data = cla_sum;
           we = 1'b1;
-        end else if (insn_slti) begin  // test fail
+        end else if (insn_slti) begin    //slti
           // rd_data = rs1_data < imm_i_sext ? {31'b0, 1'b1} : {31'b0, 1'b0};
           // rd_data = (slti_diff[32])? {31'b0, 1'b1} : {31'b0, 1'b0};
           rd_data = ($signed(rs1_data) < $signed(imm_i_sext))? {31'b0, 1'b1} : {31'b0, 1'b0};
@@ -337,42 +338,51 @@ module DatapathSingleCycle (
         end else if (insn_and) begin    //and
           rd_data = rs1_data & rs2_data;
           we = 1'b1;
-        end else if (insn_mul) begin   
+        end else if (insn_mul) begin    //mul
           rd_data = rs1_data * rs2_data;
           we = 1'b1;
-        end else if (insn_mulh) begin   
-          mul_h= $signed(rs1_data) * $signed(rs2_data);
+        end else if (insn_mulh) begin   //mulh
+          mul_h= {{32{rs1_data[31]}}, rs1_data} * {{32{rs2_data[31]}}, rs2_data};
           rd_data = mul_h[63:32];
           we = 1'b1;
-        end else if (insn_mulhsu) begin   
-          mul_hsu = $signed(rs1_data) * rs2_data;
+        end else if (insn_mulhsu) begin //mulhsu
+          // mul_hsu = $signed(rs1_data) * rs2_data;  //wrong, does not pat sign bit as expected
+          mul_hsu = {{32{rs1_data[31]}}, rs1_data} * {32'b0, rs2_data};
           rd_data = mul_hsu[63:32];
           we = 1'b1;
-        end else if (insn_mulhu) begin   
+        end else if (insn_mulhu) begin  //mulhu
           mul_hu = rs1_data * rs2_data;
           rd_data = mul_hu[63:32];
           we = 1'b1;
-        end else if (insn_div) begin  
-          dividend = $signed(rs1_data);
-          divisor = $signed(rs2_data);
+        end else if (insn_div) begin    //div
+          if (rs1_data[31])
+            dividend = ~rs1_data + 1;
+          if (rs2_data[31])
+            divisor = ~rs2_data + 1;
+
+          if ((rs1_data[31] & rs2_data[31]) || (!rs1_data[31] & !rs2_data[31]) || (rs2_data == 'd0))  //x / 0 = -1, the quotient has been -1
+            rd_data = quotient;
+          else
+            rd_data = ~quotient + 'd1;
+          we = 1'b1;
+        end else if (insn_divu) begin  //divu
           rd_data = quotient;
           we = 1'b1;
-        end else if (insn_divu) begin   
-          dividend = rs1_data;
-          divisor = rs2_data;
-          rd_data = quotient;
+        end else if (insn_rem) begin   //rem    //-a / (+-)b = -, a / (+-b) = + 
+          if (rs1_data[31])
+            dividend = ~rs1_data + 1;
+          if (rs2_data[31])
+            divisor = ~rs2_data + 1;
+          
+          if (rs1_data[31])
+            rd_data = ~remainder + 'd1;
+          else
+            rd_data = remainder;
           we = 1'b1;
-        end else if (insn_rem) begin   
-          dividend = $signed(rs1_data);
-          divisor = $signed(rs2_data);
+        end else if (insn_remu) begin  //remu
           rd_data = remainder;
           we = 1'b1;
-        end else if (insn_remu) begin   
-          dividend = rs1_data;
-          divisor = rs2_data;
-          rd_data = remainder;
-          we = 1'b1;
-        end  
+        end 
       end
 
       OpLoad: begin
@@ -419,21 +429,42 @@ module DatapathSingleCycle (
       end
 
       OpStore: begin
-        if (insn_sb) begin
+        if (insn_sb) begin              //sb
+          addr_ld = rs1_data + imm_s_sext;
+          
+          case (addr_ld[1:0])
+          2'b00: begin  store_data_to_dmem[0*8 +: 8] = rs2_data[7:0]; store_we_to_dmem = 4'b0001;  end
+          2'b01: begin  store_data_to_dmem[1*8 +: 8] = rs2_data[7:0]; store_we_to_dmem = 4'b0010;  end
+          2'b10: begin  store_data_to_dmem[2*8 +: 8] = rs2_data[7:0]; store_we_to_dmem = 4'b0100;  end
+          2'b11: begin  store_data_to_dmem[3*8 +: 8] = rs2_data[7:0]; store_we_to_dmem = 4'b1000;  end
+          endcase
+        end else if (insn_sh) begin     //sh
+          addr_ld = rs1_data + imm_s_sext;
 
-        end else if (insn_sh) begin
+          case (addr_ld[1])
+          1'b0:begin  store_data_to_dmem[0*8 +: 16] = rs2_data[15:0]; store_we_to_dmem = 4'b0011;  end
+          1'b1:begin  store_data_to_dmem[2*8 +: 16] = rs2_data[15:0]; store_we_to_dmem = 4'b1100;  end
+          endcase
+        end else if (insn_sw) begin     //sw
+          addr_ld = rs1_data + imm_s_sext;
 
-        end else if (insn_sw) begin
-
+          store_data_to_dmem = rs2_data;
+          store_we_to_dmem = 4'b1111;
         end
       end
 
-      OpJal : begin
+      OpJal : begin                     //Jal
+        rd_data = pcCurrent + 'd4;
+        we = 1'b1;
 
+        pcNext = pcCurrent + imm_j_sext;
       end
 
-      OpJalr : begin
-
+      OpJalr : begin                    //Jalr
+        rd_data = pcCurrent + 'd4;
+        we = 1'b1;
+        
+        pcNext = (rs1_data + imm_i_sext) & ~(32'h1);
       end
 
       OpBranch: begin
@@ -458,14 +489,13 @@ module DatapathSingleCycle (
         end
       end
 
-
       OpEnviron: begin
-        if (insn_ecall) begin
+        if (insn_ecall) begin           //ecall
           halt = 1'b1;
         end
       end
 
-      OpMiscMem: begin
+      OpMiscMem: begin                  //fence
 
       end
 
@@ -475,7 +505,7 @@ module DatapathSingleCycle (
     endcase
   end
 
-//instantiate register file
+//register file
 RegFile rf(
     .rd       (  insn_rd  ),
     .rd_data  (  rd_data  ),
@@ -489,6 +519,7 @@ RegFile rf(
     .rst      (  rst      )
 );
 
+//cla adder
 cla u_cla(
     .a   ( cla_a   ),
     .b   ( cla_b   ),
@@ -496,14 +527,13 @@ cla u_cla(
     .sum ( cla_sum )
 );
 
+//divider
 divider_unsigned u_divider(
     .i_dividend  ( dividend  ),
     .i_divisor   ( divisor   ),
     .o_remainder ( remainder ),
     .o_quotient  ( quotient  )
 );
-
-
 
 
 endmodule
