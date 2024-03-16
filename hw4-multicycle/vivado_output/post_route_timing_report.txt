@@ -1,0 +1,361 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
+| Date         : Sat Mar 16 18:22:31 2024
+| Host         : big05.seas.upenn.edu running 64-bit openSUSE Leap 15.5
+| Command      : report_timing -file ./vivado_output/post_route_timing_report.txt
+| Design       : RiscvSystem
+| Device       : 7z020-clg484
+| Speed File   : -1  PRODUCTION 1.12 2019-11-22
+------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             7.490ns  (required time - arrival time)
+  Source:                 datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][0]/C
+                            (rising edge-triggered cell FDRE clocked by clk_proc_clk_wiz_0  {rise@0.000ns fall@38.462ns period=76.923ns})
+  Destination:            datapath/rf/regs_reg[12][30]/D
+                            (rising edge-triggered cell FDRE clocked by clk_proc_clk_wiz_0  {rise@0.000ns fall@38.462ns period=76.923ns})
+  Path Group:             clk_proc_clk_wiz_0
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            76.923ns  (clk_proc_clk_wiz_0 rise@76.923ns - clk_proc_clk_wiz_0 rise@0.000ns)
+  Data Path Delay:        69.246ns  (logic 22.157ns (31.997%)  route 47.089ns (68.003%))
+  Logic Levels:           108  (CARRY4=67 LUT2=8 LUT3=1 LUT4=10 LUT5=1 LUT6=21)
+  Clock Path Skew:        -0.058ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    -1.589ns = ( 75.334 - 76.923 ) 
+    Source Clock Delay      (SCD):    -0.955ns
+    Clock Pessimism Removal (CPR):    0.577ns
+  Clock Uncertainty:      0.101ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.189ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_proc_clk_wiz_0 rise edge)
+                                                      0.000     0.000 r  
+    Y9                                                0.000     0.000 r  CLOCK_100MHz (IN)
+                         net (fo=0)                   0.000     0.000    mmcm/CLOCK_100MHz
+    Y9                   IBUF (Prop_ibuf_I_O)         1.490     1.490 r  mmcm/clkin1_ibufg/O
+                         net (fo=1, routed)           1.285     2.775    mmcm/clk_in1_clk_wiz_0
+    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -7.343    -4.568 r  mmcm/mmcm_adv_inst/CLKOUT0
+                         net (fo=2, routed)           1.855    -2.713    mmcm/clk_proc_clk_wiz_0
+    BUFGCTRL_X0Y0        BUFGCTRL (Prop_bufgctrl_I0_O)
+                                                      0.101    -2.612 r  mmcm/clkout1_buf/O
+                         net (fo=1057, routed)        1.657    -0.955    datapath/u_divider_unsigned_pipelined/CLK
+    SLICE_X41Y16         FDRE                                         r  datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X41Y16         FDRE (Prop_fdre_C_Q)         0.456    -0.499 f  datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][0]/Q
+                         net (fo=48, routed)          1.293     0.794    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor_n_0_][0]
+    SLICE_X33Y25         LUT2 (Prop_lut2_I0_O)        0.124     0.918 r  datapath/u_divider_unsigned_pipelined/regs[1][15]_i_151/O
+                         net (fo=1, routed)           0.000     0.918    datapath/u_divider_unsigned_pipelined/regs[1][15]_i_151_n_0
+    SLICE_X33Y25         CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     1.450 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][15]_i_119/CO[3]
+                         net (fo=1, routed)           0.000     1.450    datapath/u_divider_unsigned_pipelined/regs_reg[1][15]_i_119_n_0
+    SLICE_X33Y26         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     1.564 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][15]_i_89/CO[3]
+                         net (fo=1, routed)           0.000     1.564    datapath/u_divider_unsigned_pipelined/regs_reg[1][15]_i_89_n_0
+    SLICE_X33Y27         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     1.678 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][15]_i_56/CO[3]
+                         net (fo=1, routed)           0.000     1.678    datapath/u_divider_unsigned_pipelined/regs_reg[1][15]_i_56_n_0
+    SLICE_X33Y28         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     1.792 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][15]_i_25/CO[3]
+                         net (fo=239, routed)         1.809     3.601    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][30]_10[0]
+    SLICE_X44Y30         LUT5 (Prop_lut5_I3_O)        0.124     3.725 r  datapath/u_divider_unsigned_pipelined/regs[1][14]_i_63/O
+                         net (fo=1, routed)           0.000     3.725    datapath/u_divider_unsigned_pipelined/regs[1][14]_i_63_n_0
+    SLICE_X44Y30         CARRY4 (Prop_carry4_S[2]_CO[3])
+                                                      0.398     4.123 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][14]_i_35/CO[3]
+                         net (fo=1, routed)           0.000     4.123    datapath/u_divider_unsigned_pipelined/regs_reg[1][14]_i_35_n_0
+    SLICE_X44Y31         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.237 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][14]_i_16/CO[3]
+                         net (fo=156, routed)         1.713     5.951    datapath/u_divider_unsigned_pipelined/regs_reg[1][14]_i_16_n_0
+    SLICE_X48Y22         LUT4 (Prop_lut4_I3_O)        0.124     6.075 f  datapath/u_divider_unsigned_pipelined/regs[1][13]_i_168/O
+                         net (fo=1, routed)           0.431     6.506    datapath/u_divider_unsigned_pipelined/remainder[18]_32[1]
+    SLICE_X49Y23         LUT4 (Prop_lut4_I1_O)        0.124     6.630 r  datapath/u_divider_unsigned_pipelined/regs[1][13]_i_128/O
+                         net (fo=1, routed)           0.576     7.206    datapath/u_divider_unsigned_pipelined/regs[1][13]_i_128_n_0
+    SLICE_X48Y25         CARRY4 (Prop_carry4_DI[1]_CO[3])
+                                                      0.507     7.713 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][13]_i_82/CO[3]
+                         net (fo=1, routed)           0.000     7.713    datapath/u_divider_unsigned_pipelined/regs_reg[1][13]_i_82_n_0
+    SLICE_X48Y26         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     7.827 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][13]_i_57/CO[3]
+                         net (fo=1, routed)           0.000     7.827    datapath/u_divider_unsigned_pipelined/regs_reg[1][13]_i_57_n_0
+    SLICE_X48Y27         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     7.941 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][13]_i_36/CO[3]
+                         net (fo=1, routed)           0.000     7.941    datapath/u_divider_unsigned_pipelined/regs_reg[1][13]_i_36_n_0
+    SLICE_X48Y28         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     8.055 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][13]_i_17/CO[3]
+                         net (fo=47, routed)          1.269     9.325    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][30]_11[0]
+    SLICE_X48Y22         LUT6 (Prop_lut6_I5_O)        0.124     9.449 r  datapath/u_divider_unsigned_pipelined/regs[1][12]_i_136/O
+                         net (fo=10, routed)          1.038    10.486    datapath/u_divider_unsigned_pipelined/remainder[19]_33[2]
+    SLICE_X39Y24         LUT2 (Prop_lut2_I0_O)        0.150    10.636 r  datapath/u_divider_unsigned_pipelined/regs[1][12]_i_138/O
+                         net (fo=1, routed)           0.588    11.224    datapath/u_divider_unsigned_pipelined/regs[1][12]_i_138_n_0
+    SLICE_X41Y26         LUT6 (Prop_lut6_I5_O)        0.326    11.550 r  datapath/u_divider_unsigned_pipelined/regs[1][12]_i_105/O
+                         net (fo=1, routed)           0.000    11.550    datapath/u_divider_unsigned_pipelined/regs[1][12]_i_105_n_0
+    SLICE_X41Y26         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550    12.100 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][12]_i_75/CO[3]
+                         net (fo=1, routed)           0.000    12.100    datapath/u_divider_unsigned_pipelined/regs_reg[1][12]_i_75_n_0
+    SLICE_X41Y27         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    12.214 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][12]_i_52/CO[3]
+                         net (fo=1, routed)           0.000    12.214    datapath/u_divider_unsigned_pipelined/regs_reg[1][12]_i_52_n_0
+    SLICE_X41Y28         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    12.328 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][12]_i_35/CO[3]
+                         net (fo=1, routed)           0.000    12.328    datapath/u_divider_unsigned_pipelined/regs_reg[1][12]_i_35_n_0
+    SLICE_X41Y29         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    12.442 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][12]_i_17/CO[3]
+                         net (fo=168, routed)         1.399    13.841    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][30]_6[0]
+    SLICE_X49Y23         LUT6 (Prop_lut6_I5_O)        0.124    13.965 r  datapath/u_divider_unsigned_pipelined/regs[1][11]_i_204/O
+                         net (fo=10, routed)          0.984    14.949    datapath/u_divider_unsigned_pipelined/remainder[20]_34[2]
+    SLICE_X39Y24         LUT2 (Prop_lut2_I0_O)        0.124    15.073 r  datapath/u_divider_unsigned_pipelined/regs[1][11]_i_205/O
+                         net (fo=1, routed)           0.434    15.507    datapath/u_divider_unsigned_pipelined/regs[1][11]_i_205_n_0
+    SLICE_X39Y25         LUT6 (Prop_lut6_I5_O)        0.124    15.631 r  datapath/u_divider_unsigned_pipelined/regs[1][11]_i_167/O
+                         net (fo=1, routed)           0.000    15.631    datapath/u_divider_unsigned_pipelined/regs[1][11]_i_167_n_0
+    SLICE_X39Y25         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550    16.181 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][11]_i_110/CO[3]
+                         net (fo=1, routed)           0.000    16.181    datapath/u_divider_unsigned_pipelined/regs_reg[1][11]_i_110_n_0
+    SLICE_X39Y26         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    16.295 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][11]_i_63/CO[3]
+                         net (fo=1, routed)           0.000    16.295    datapath/u_divider_unsigned_pipelined/regs_reg[1][11]_i_63_n_0
+    SLICE_X39Y27         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    16.409 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][11]_i_30/CO[3]
+                         net (fo=1, routed)           0.000    16.409    datapath/u_divider_unsigned_pipelined/regs_reg[1][11]_i_30_n_0
+    SLICE_X39Y28         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    16.523 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][11]_i_8/CO[3]
+                         net (fo=81, routed)          1.463    17.986    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][30]_7[0]
+    SLICE_X49Y23         LUT4 (Prop_lut4_I3_O)        0.124    18.110 f  datapath/u_divider_unsigned_pipelined/regs[1][10]_i_188/O
+                         net (fo=1, routed)           0.455    18.565    datapath/u_divider_unsigned_pipelined/remainder[21]_35[1]
+    SLICE_X49Y23         LUT4 (Prop_lut4_I1_O)        0.124    18.689 r  datapath/u_divider_unsigned_pipelined/regs[1][10]_i_119/O
+                         net (fo=1, routed)           1.024    19.713    datapath/u_divider_unsigned_pipelined/regs[1][10]_i_119_n_0
+    SLICE_X38Y25         CARRY4 (Prop_carry4_DI[1]_CO[3])
+                                                      0.520    20.233 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_76/CO[3]
+                         net (fo=1, routed)           0.000    20.233    datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_76_n_0
+    SLICE_X38Y26         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    20.350 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_46/CO[3]
+                         net (fo=1, routed)           0.000    20.350    datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_46_n_0
+    SLICE_X38Y27         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    20.467 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_25/CO[3]
+                         net (fo=1, routed)           0.000    20.467    datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_25_n_0
+    SLICE_X38Y28         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    20.584 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_8/CO[3]
+                         net (fo=169, routed)         1.114    21.698    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][30]_8[0]
+    SLICE_X39Y23         LUT6 (Prop_lut6_I5_O)        0.124    21.822 r  datapath/u_divider_unsigned_pipelined/regs[1][8]_i_185/O
+                         net (fo=10, routed)          0.795    22.617    datapath/u_divider_unsigned_pipelined/remainder[22]_36[2]
+    SLICE_X37Y26         LUT2 (Prop_lut2_I0_O)        0.150    22.767 r  datapath/u_divider_unsigned_pipelined/regs[1][10]_i_263/O
+                         net (fo=1, routed)           0.470    23.237    datapath/u_divider_unsigned_pipelined/regs[1][10]_i_263_n_0
+    SLICE_X34Y25         LUT6 (Prop_lut6_I5_O)        0.326    23.563 r  datapath/u_divider_unsigned_pipelined/regs[1][10]_i_217/O
+                         net (fo=1, routed)           0.000    23.563    datapath/u_divider_unsigned_pipelined/regs[1][10]_i_217_n_0
+    SLICE_X34Y25         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.533    24.096 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_158/CO[3]
+                         net (fo=1, routed)           0.000    24.096    datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_158_n_0
+    SLICE_X34Y26         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    24.213 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_102/CO[3]
+                         net (fo=1, routed)           0.000    24.213    datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_102_n_0
+    SLICE_X34Y27         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    24.330 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_67/CO[3]
+                         net (fo=1, routed)           0.000    24.330    datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_67_n_0
+    SLICE_X34Y28         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    24.447 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][10]_i_39/CO[3]
+                         net (fo=86, routed)          1.684    26.131    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][30]_9[0]
+    SLICE_X43Y17         LUT4 (Prop_lut4_I3_O)        0.150    26.281 f  datapath/u_divider_unsigned_pipelined/regs[1][8]_i_187/O
+                         net (fo=1, routed)           0.436    26.717    datapath/u_divider_unsigned_pipelined/remainder[23]_37[1]
+    SLICE_X43Y17         LUT4 (Prop_lut4_I1_O)        0.326    27.043 r  datapath/u_divider_unsigned_pipelined/regs[1][8]_i_142/O
+                         net (fo=1, routed)           0.670    27.713    datapath/u_divider_unsigned_pipelined/regs[1][8]_i_142_n_0
+    SLICE_X40Y19         CARRY4 (Prop_carry4_DI[1]_CO[3])
+                                                      0.507    28.220 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_96/CO[3]
+                         net (fo=1, routed)           0.000    28.220    datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_96_n_0
+    SLICE_X40Y20         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    28.334 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_58/CO[3]
+                         net (fo=1, routed)           0.000    28.334    datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_58_n_0
+    SLICE_X40Y21         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    28.448 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_29/CO[3]
+                         net (fo=1, routed)           0.000    28.448    datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_29_n_0
+    SLICE_X40Y22         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    28.562 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_13/CO[3]
+                         net (fo=158, routed)         1.725    30.287    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][30]_2[0]
+    SLICE_X38Y29         LUT6 (Prop_lut6_I5_O)        0.124    30.411 f  datapath/u_divider_unsigned_pipelined/regs[1][7]_i_93/O
+                         net (fo=4, routed)           0.882    31.294    datapath/u_divider_unsigned_pipelined/remainder[24]_38[22]
+    SLICE_X47Y20         LUT6 (Prop_lut6_I4_O)        0.124    31.418 r  datapath/u_divider_unsigned_pipelined/regs[1][7]_i_63/O
+                         net (fo=1, routed)           0.401    31.819    datapath/u_divider_unsigned_pipelined/regs[1][7]_i_63_n_0
+    SLICE_X46Y20         CARRY4 (Prop_carry4_DI[3]_CO[3])
+                                                      0.396    32.215 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][7]_i_43/CO[3]
+                         net (fo=1, routed)           0.000    32.215    datapath/u_divider_unsigned_pipelined/regs_reg[1][7]_i_43_n_0
+    SLICE_X46Y21         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    32.332 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][7]_i_23/CO[3]
+                         net (fo=92, routed)          0.978    33.309    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][30]_3[0]
+    SLICE_X43Y16         LUT6 (Prop_lut6_I5_O)        0.124    33.433 r  datapath/u_divider_unsigned_pipelined/regs[1][11]_i_228/O
+                         net (fo=10, routed)          0.802    34.235    datapath/u_divider_unsigned_pipelined/remainder[25]_39[2]
+    SLICE_X38Y15         LUT2 (Prop_lut2_I0_O)        0.150    34.385 r  datapath/u_divider_unsigned_pipelined/regs[1][8]_i_208/O
+                         net (fo=1, routed)           0.437    34.822    datapath/u_divider_unsigned_pipelined/regs[1][8]_i_208_n_0
+    SLICE_X39Y17         LUT6 (Prop_lut6_I5_O)        0.348    35.170 r  datapath/u_divider_unsigned_pipelined/regs[1][8]_i_180/O
+                         net (fo=1, routed)           0.000    35.170    datapath/u_divider_unsigned_pipelined/regs[1][8]_i_180_n_0
+    SLICE_X39Y17         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550    35.720 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_126/CO[3]
+                         net (fo=1, routed)           0.000    35.720    datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_126_n_0
+    SLICE_X39Y18         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    35.834 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_82/CO[3]
+                         net (fo=1, routed)           0.000    35.834    datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_82_n_0
+    SLICE_X39Y19         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    35.948 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_49/CO[3]
+                         net (fo=1, routed)           0.000    35.948    datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_49_n_0
+    SLICE_X39Y20         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    36.062 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_27/CO[3]
+                         net (fo=158, routed)         1.309    37.372    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][30]_4[0]
+    SLICE_X39Y22         LUT3 (Prop_lut3_I2_O)        0.150    37.522 f  datapath/u_divider_unsigned_pipelined/regs[1][5]_i_147/O
+                         net (fo=2, routed)           0.594    38.116    datapath/u_divider_unsigned_pipelined/remainder[26]_40[14]
+    SLICE_X43Y18         LUT6 (Prop_lut6_I4_O)        0.326    38.442 r  datapath/u_divider_unsigned_pipelined/regs[1][5]_i_94/O
+                         net (fo=1, routed)           0.656    39.098    datapath/u_divider_unsigned_pipelined/regs[1][5]_i_94_n_0
+    SLICE_X37Y20         CARRY4 (Prop_carry4_DI[3]_CO[3])
+                                                      0.385    39.483 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][5]_i_53/CO[3]
+                         net (fo=1, routed)           0.000    39.483    datapath/u_divider_unsigned_pipelined/regs_reg[1][5]_i_53_n_0
+    SLICE_X37Y21         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    39.597 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][5]_i_22/CO[3]
+                         net (fo=1, routed)           0.000    39.597    datapath/u_divider_unsigned_pipelined/regs_reg[1][5]_i_22_n_0
+    SLICE_X37Y22         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    39.711 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][5]_i_9/CO[3]
+                         net (fo=99, routed)          1.694    41.404    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][30]_5[0]
+    SLICE_X38Y15         LUT4 (Prop_lut4_I3_O)        0.150    41.554 f  datapath/u_divider_unsigned_pipelined/regs[1][4]_i_135/O
+                         net (fo=1, routed)           0.452    42.006    datapath/u_divider_unsigned_pipelined/remainder[27]_41[1]
+    SLICE_X38Y15         LUT4 (Prop_lut4_I1_O)        0.328    42.334 r  datapath/u_divider_unsigned_pipelined/regs[1][4]_i_113/O
+                         net (fo=1, routed)           0.988    43.322    datapath/u_divider_unsigned_pipelined/regs[1][4]_i_113_n_0
+    SLICE_X36Y24         CARRY4 (Prop_carry4_DI[1]_CO[3])
+                                                      0.520    43.842 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_81/CO[3]
+                         net (fo=1, routed)           0.009    43.851    datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_81_n_0
+    SLICE_X36Y25         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    43.968 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_48/CO[3]
+                         net (fo=1, routed)           0.000    43.968    datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_48_n_0
+    SLICE_X36Y26         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    44.085 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_24/CO[3]
+                         net (fo=1, routed)           0.000    44.085    datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_24_n_0
+    SLICE_X36Y27         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    44.202 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_9/CO[3]
+                         net (fo=152, routed)         1.462    45.664    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][30]_0[0]
+    SLICE_X37Y16         LUT6 (Prop_lut6_I5_O)        0.124    45.788 f  datapath/u_divider_unsigned_pipelined/regs[1][6]_i_41/O
+                         net (fo=10, routed)          0.829    46.618    datapath/u_divider_unsigned_pipelined/remainder[28]_42[2]
+    SLICE_X30Y24         LUT4 (Prop_lut4_I2_O)        0.124    46.742 r  datapath/u_divider_unsigned_pipelined/regs[1][3]_i_113/O
+                         net (fo=1, routed)           0.724    47.466    datapath/u_divider_unsigned_pipelined/regs[1][3]_i_113_n_0
+    SLICE_X33Y20         CARRY4 (Prop_carry4_DI[1]_CO[3])
+                                                      0.507    47.973 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][3]_i_76/CO[3]
+                         net (fo=1, routed)           0.000    47.973    datapath/u_divider_unsigned_pipelined/regs_reg[1][3]_i_76_n_0
+    SLICE_X33Y21         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    48.087 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][3]_i_46/CO[3]
+                         net (fo=1, routed)           0.000    48.087    datapath/u_divider_unsigned_pipelined/regs_reg[1][3]_i_46_n_0
+    SLICE_X33Y22         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    48.201 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][3]_i_22/CO[3]
+                         net (fo=1, routed)           0.000    48.201    datapath/u_divider_unsigned_pipelined/regs_reg[1][3]_i_22_n_0
+    SLICE_X33Y23         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    48.315 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][3]_i_9/CO[3]
+                         net (fo=103, routed)         1.385    49.699    datapath/u_divider_unsigned_pipelined/reg_stage_2_reg[divisor][30]_1[0]
+    SLICE_X34Y14         LUT6 (Prop_lut6_I5_O)        0.124    49.823 r  datapath/u_divider_unsigned_pipelined/regs[1][5]_i_80/O
+                         net (fo=10, routed)          0.750    50.574    datapath/u_divider_unsigned_pipelined/remainder[29]_43[2]
+    SLICE_X33Y15         LUT2 (Prop_lut2_I0_O)        0.150    50.724 r  datapath/u_divider_unsigned_pipelined/regs[1][4]_i_146/O
+                         net (fo=1, routed)           0.471    51.195    datapath/u_divider_unsigned_pipelined/regs[1][4]_i_146_n_0
+    SLICE_X34Y17         LUT6 (Prop_lut6_I5_O)        0.326    51.521 r  datapath/u_divider_unsigned_pipelined/regs[1][4]_i_143/O
+                         net (fo=1, routed)           0.000    51.521    datapath/u_divider_unsigned_pipelined/regs[1][4]_i_143_n_0
+    SLICE_X34Y17         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.533    52.054 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_126/CO[3]
+                         net (fo=1, routed)           0.000    52.054    datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_126_n_0
+    SLICE_X34Y18         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    52.171 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_97/CO[3]
+                         net (fo=1, routed)           0.000    52.171    datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_97_n_0
+    SLICE_X34Y19         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    52.288 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_65/CO[3]
+                         net (fo=1, routed)           0.000    52.288    datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_65_n_0
+    SLICE_X34Y20         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117    52.405 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][4]_i_34/CO[3]
+                         net (fo=149, routed)         1.204    53.609    datapath/u_divider_unsigned_pipelined/S[1]
+    SLICE_X33Y14         LUT6 (Prop_lut6_I5_O)        0.124    53.733 f  datapath/u_divider_unsigned_pipelined/regs[1][4]_i_75/O
+                         net (fo=11, routed)          0.649    54.382    datapath/u_divider_unsigned_pipelined/remainder[30]_44[2]
+    SLICE_X34Y13         LUT4 (Prop_lut4_I2_O)        0.124    54.506 r  datapath/u_divider_unsigned_pipelined/regs[1][1]_i_66/O
+                         net (fo=1, routed)           0.794    55.300    datapath/u_divider_unsigned_pipelined/regs[1][1]_i_66_n_0
+    SLICE_X28Y17         CARRY4 (Prop_carry4_DI[1]_CO[3])
+                                                      0.507    55.807 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][1]_i_52/CO[3]
+                         net (fo=1, routed)           0.000    55.807    datapath/u_divider_unsigned_pipelined/regs_reg[1][1]_i_52_n_0
+    SLICE_X28Y18         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    55.921 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][1]_i_40/CO[3]
+                         net (fo=1, routed)           0.000    55.921    datapath/u_divider_unsigned_pipelined/regs_reg[1][1]_i_40_n_0
+    SLICE_X28Y19         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    56.035 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][1]_i_26/CO[3]
+                         net (fo=1, routed)           0.000    56.035    datapath/u_divider_unsigned_pipelined/regs_reg[1][1]_i_26_n_0
+    SLICE_X28Y20         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    56.149 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][1]_i_15/CO[3]
+                         net (fo=115, routed)         1.355    57.503    datapath/u_divider_unsigned_pipelined/S[0]
+    SLICE_X32Y14         LUT6 (Prop_lut6_I5_O)        0.124    57.627 r  datapath/u_divider_unsigned_pipelined/regs[1][3]_i_31/O
+                         net (fo=6, routed)           0.823    58.451    datapath/u_divider_unsigned_pipelined/remainder[31]_45[2]
+    SLICE_X31Y13         LUT2 (Prop_lut2_I0_O)        0.124    58.575 r  datapath/u_divider_unsigned_pipelined/regs[1][31]_i_213/O
+                         net (fo=1, routed)           0.597    59.171    datapath/u_divider_unsigned_pipelined/regs[1][31]_i_213_n_0
+    SLICE_X27Y16         LUT6 (Prop_lut6_I5_O)        0.124    59.295 r  datapath/u_divider_unsigned_pipelined/regs[1][31]_i_200/O
+                         net (fo=1, routed)           0.000    59.295    datapath/u_divider_unsigned_pipelined/regs[1][31]_i_200_n_0
+    SLICE_X27Y16         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550    59.845 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][31]_i_163/CO[3]
+                         net (fo=1, routed)           0.000    59.845    datapath/u_divider_unsigned_pipelined/regs_reg[1][31]_i_163_n_0
+    SLICE_X27Y17         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    59.959 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][31]_i_120/CO[3]
+                         net (fo=1, routed)           0.000    59.959    datapath/u_divider_unsigned_pipelined/regs_reg[1][31]_i_120_n_0
+    SLICE_X27Y18         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    60.073 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][31]_i_81/CO[3]
+                         net (fo=1, routed)           0.000    60.073    datapath/u_divider_unsigned_pipelined/regs_reg[1][31]_i_81_n_0
+    SLICE_X27Y19         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    60.187 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][31]_i_47/CO[3]
+                         net (fo=93, routed)          1.476    61.663    datapath/u_divider_unsigned_pipelined/CO[0]
+    SLICE_X27Y13         LUT2 (Prop_lut2_I0_O)        0.150    61.813 r  datapath/u_divider_unsigned_pipelined/regs[1][2]_i_29/O
+                         net (fo=1, routed)           0.342    62.156    datapath/u_divider_unsigned_pipelined/regs[1][2]_i_29_n_0
+    SLICE_X29Y14         CARRY4 (Prop_carry4_CYINIT_CO[3])
+                                                      0.788    62.944 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][2]_i_15/CO[3]
+                         net (fo=1, routed)           0.000    62.944    datapath/u_divider_unsigned_pipelined/regs_reg[1][2]_i_15_n_0
+    SLICE_X29Y15         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    63.058 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_39/CO[3]
+                         net (fo=1, routed)           0.000    63.058    datapath/u_divider_unsigned_pipelined/regs_reg[1][8]_i_39_n_0
+    SLICE_X29Y16         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    63.172 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][11]_i_48/CO[3]
+                         net (fo=1, routed)           0.000    63.172    datapath/u_divider_unsigned_pipelined/regs_reg[1][11]_i_48_n_0
+    SLICE_X29Y17         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    63.286 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][16]_i_27/CO[3]
+                         net (fo=1, routed)           0.000    63.286    datapath/u_divider_unsigned_pipelined/regs_reg[1][16]_i_27_n_0
+    SLICE_X29Y18         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    63.400 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][20]_i_39/CO[3]
+                         net (fo=1, routed)           0.000    63.400    datapath/u_divider_unsigned_pipelined/regs_reg[1][20]_i_39_n_0
+    SLICE_X29Y19         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    63.514 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][24]_i_34/CO[3]
+                         net (fo=1, routed)           0.000    63.514    datapath/u_divider_unsigned_pipelined/regs_reg[1][24]_i_34_n_0
+    SLICE_X29Y20         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    63.628 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][28]_i_36/CO[3]
+                         net (fo=1, routed)           0.000    63.628    datapath/u_divider_unsigned_pipelined/regs_reg[1][28]_i_36_n_0
+    SLICE_X29Y21         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.334    63.962 r  datapath/u_divider_unsigned_pipelined/regs_reg[1][31]_i_53/O[1]
+                         net (fo=1, routed)           0.408    64.370    datapath/u_divider_unsigned_pipelined/rd_data0[30]
+    SLICE_X29Y22         LUT6 (Prop_lut6_I4_O)        0.303    64.673 r  datapath/u_divider_unsigned_pipelined/regs[1][30]_i_38/O
+                         net (fo=1, routed)           0.682    65.355    datapath/rf/regs[1][30]_i_3_0
+    SLICE_X22Y22         LUT6 (Prop_lut6_I4_O)        0.124    65.479 r  datapath/rf/regs[1][30]_i_15/O
+                         net (fo=1, routed)           0.587    66.066    datapath/u_divider_unsigned_pipelined/regs_reg[31][30]_0
+    SLICE_X22Y25         LUT6 (Prop_lut6_I5_O)        0.124    66.190 r  datapath/u_divider_unsigned_pipelined/regs[1][30]_i_3/O
+                         net (fo=1, routed)           0.450    66.639    mem/regs_reg[31][30]
+    SLICE_X20Y25         LUT6 (Prop_lut6_I1_O)        0.124    66.763 r  mem/regs[1][30]_i_1/O
+                         net (fo=31, routed)          1.528    68.292    datapath/rf/regs_reg[31][31]_0[22]
+    SLICE_X36Y32         FDRE                                         r  datapath/rf/regs_reg[12][30]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_proc_clk_wiz_0 rise edge)
+                                                     76.923    76.923 r  
+    Y9                                                0.000    76.923 r  CLOCK_100MHz (IN)
+                         net (fo=0)                   0.000    76.923    mmcm/CLOCK_100MHz
+    Y9                   IBUF (Prop_ibuf_I_O)         1.420    78.343 r  mmcm/clkin1_ibufg/O
+                         net (fo=1, routed)           1.162    79.505    mmcm/clk_in1_clk_wiz_0
+    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -7.438    72.067 r  mmcm/mmcm_adv_inst/CLKOUT0
+                         net (fo=2, routed)           1.691    73.758    mmcm/clk_proc_clk_wiz_0
+    BUFGCTRL_X0Y0        BUFGCTRL (Prop_bufgctrl_I0_O)
+                                                      0.091    73.849 r  mmcm/clkout1_buf/O
+                         net (fo=1057, routed)        1.484    75.334    datapath/rf/CLK
+    SLICE_X36Y32         FDRE                                         r  datapath/rf/regs_reg[12][30]/C
+                         clock pessimism              0.577    75.910    
+                         clock uncertainty           -0.101    75.809    
+    SLICE_X36Y32         FDRE (Setup_fdre_C_D)       -0.028    75.781    datapath/rf/regs_reg[12][30]
+  -------------------------------------------------------------------
+                         required time                         75.781    
+                         arrival time                         -68.292    
+  -------------------------------------------------------------------
+                         slack                                  7.490    
+
+
+
+
