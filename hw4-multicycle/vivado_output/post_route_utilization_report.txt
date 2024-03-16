@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-| Date         : Sat Mar 16 18:47:10 2024
+| Date         : Sat Mar 16 18:53:46 2024
 | Host         : big05.seas.upenn.edu running 64-bit openSUSE Leap 15.5
 | Command      : report_utilization -file ./vivado_output/post_route_utilization_report.txt
 | Design       : RiscvSystem
@@ -67,9 +67,9 @@ Table of Contents
 +--------------------------------------------+------+-------+-----------+-------+
 |                  Site Type                 | Used | Fixed | Available | Util% |
 +--------------------------------------------+------+-------+-----------+-------+
-| Slice                                      | 1529 |     0 |     13300 | 11.50 |
-|   SLICEL                                   |  999 |     0 |           |       |
-|   SLICEM                                   |  530 |     0 |           |       |
+| Slice                                      | 1521 |     0 |     13300 | 11.44 |
+|   SLICEL                                   |  992 |     0 |           |       |
+|   SLICEM                                   |  529 |     0 |           |       |
 | LUT as Logic                               | 4044 |     0 |     53200 |  7.60 |
 |   using O5 output only                     |    0 |       |           |       |
 |   using O6 output only                     | 3229 |       |           |       |
@@ -80,8 +80,8 @@ Table of Contents
 | Slice Registers                            | 1435 |     0 |    106400 |  1.35 |
 |   Register driven from within the Slice    |  207 |       |           |       |
 |   Register driven from outside the Slice   | 1228 |       |           |       |
-|     LUT in front of the register is unused |  713 |       |           |       |
-|     LUT in front of the register is used   |  515 |       |           |       |
+|     LUT in front of the register is unused |  709 |       |           |       |
+|     LUT in front of the register is used   |  519 |       |           |       |
 | Unique Control Sets                        |   81 |       |     13300 |  0.61 |
 +--------------------------------------------+------+-------+-----------+-------+
 * * Note: Available Control Sets calculated as Slice * 1, Review the Control Sets Report for more information regarding control sets.

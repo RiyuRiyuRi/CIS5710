@@ -59,8 +59,8 @@
 
 
 // TODO: set your desired clock frequency here. ONLY ONE should be defined at a time.
-//`define CLOCK_5_MHZ
-`define CLOCK_5_5_MHZ
+`define CLOCK_5_MHZ
+// `define CLOCK_5_5_MHZ
 //`define CLOCK_6_MHZ
 //`define CLOCK_6_5_MHZ
 //`define CLOCK_7_MHZ

@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-| Date         : Sat Mar 16 18:47:10 2024
+| Date         : Sat Mar 16 18:53:46 2024
 | Host         : big05.seas.upenn.edu running 64-bit openSUSE Leap 15.5
 | Command      : report_design_analysis -file ./vivado_output/post_route_design_analysis_report.txt
 | Design       : RiscvSystem
@@ -25,12 +25,12 @@ Table of Contents
 +---------------------------+---------------------------------------------------------------------------+
 |      Characteristics      |                                  Path #1                                  |
 +---------------------------+---------------------------------------------------------------------------+
-| Requirement               | 45.455                                                                    |
-| Path Delay                | 11.585                                                                    |
-| Logic Delay               | 3.658(32%)                                                                |
-| Net Delay                 | 7.927(68%)                                                                |
-| Clock Skew                | -0.485                                                                    |
-| Slack                     | 33.092                                                                    |
+| Requirement               | 50.000                                                                    |
+| Path Delay                | 11.397                                                                    |
+| Logic Delay               | 3.656(33%)                                                                |
+| Net Delay                 | 7.741(67%)                                                                |
+| Clock Skew                | -0.473                                                                    |
+| Slack                     | 37.653                                                                    |
 | Clock Relationship        | Safely Timed                                                              |
 | Logic Levels              | 6                                                                         |
 | Routes                    | 7                                                                         |
@@ -49,7 +49,7 @@ Table of Contents
 | Start Point Pin Primitive | RAMB36E1/CLKARDCLK                                                        |
 | End Point Pin Primitive   | FDRE/D                                                                    |
 | Start Point Pin           | mem_reg_1_1/CLKARDCLK                                                     |
-| End Point Pin             | regs_reg[20][22]/D                                                        |
+| End Point Pin             | regs_reg[22][22]/D                                                        |
 +---------------------------+---------------------------------------------------------------------------+
 * Bounding box calculated as % of dimensions for the target device (308, 299)
 
@@ -57,12 +57,12 @@ Table of Contents
 2. Logic Level Distribution
 ---------------------------
 
-+--------------------+-------------+---+----+-----+-----+
-|   End Point Clock  | Requirement | 0 |  4 |  5  |  6  |
-+--------------------+-------------+---+----+-----+-----+
-| clk_mem_clk_wiz_0  | 45.455ns    | 8 |  0 |   0 |   0 |
-| clk_proc_clk_wiz_0 | 45.455ns    | 0 | 31 | 310 | 651 |
-+--------------------+-------------+---+----+-----+-----+
++--------------------+-------------+---+-----+-----+
+|   End Point Clock  | Requirement | 0 |  5  |  6  |
++--------------------+-------------+---+-----+-----+
+| clk_mem_clk_wiz_0  | 50.000ns    | 8 |   0 |   0 |
+| clk_proc_clk_wiz_0 | 50.000ns    | 0 | 341 | 651 |
++--------------------+-------------+---+-----+-----+
 * Columns represent the logic levels per end point clock
 ** Distribution is for top worst 1000 paths
 
